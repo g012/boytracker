@@ -59,9 +59,9 @@ static EditorDialogResult Editor_Dialog_NeedSave(const char* name, const char* c
 	return r;
 }
 
-void Editor_Tick(char* droppedFiles)
+bool Editor_Tick(char* droppedFiles)
 {
-	ImGui::ShowTestWindow(0);return;
+	//ImGui::ShowTestWindow(0);return true;
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -195,4 +195,6 @@ void Editor_Tick(char* droppedFiles)
 		break;
 	}
 #endif
+
+    return !e.exit || e.need_save;
 }

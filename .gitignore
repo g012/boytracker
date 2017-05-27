@@ -34,3 +34,5 @@
 /.vs
 /build
 /tmp
+/x64
+/x86

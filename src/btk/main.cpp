@@ -9,7 +9,7 @@
 #define APPNAME "BoyTracker"
 #define CONF "config.lua"
 
-extern void Editor_Tick(char* droppedFiles);
+extern bool Editor_Tick(char* droppedFiles);
 
 static void error_callback(int error, const char* description)
 {
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 		glfwPollEvents();
 		ImGui_ImplGlfw_NewFrame();
 
-		Editor_Tick(s_droppedFiles);
+        if (!Editor_Tick(s_droppedFiles)) break;
 		s_droppedFiles[0] = 0, s_droppedFiles[1] = 0;
 
 		// Rendering
