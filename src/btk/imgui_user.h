@@ -1,7 +1,6 @@
 #pragma once
 
 static inline ImVec4 operator*(float f, const ImVec4& v) { return ImVec4(f * v.x, f * v.y, f * v.z, f * v.w); }
-static inline ImVec4 operator+(const ImVec4& lhs, const ImVec4& rhs) { return ImVec4(lhs.x+rhs.x, lhs.y+rhs.y, lhs.z+rhs.z, lhs.w+rhs.w); }
 
 namespace ImGui
 {

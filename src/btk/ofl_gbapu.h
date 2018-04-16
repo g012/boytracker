@@ -27,6 +27,8 @@
 extern "C" {
 #endif
 
+#define OFL_GBAPU_SAMPLESPERSEC (120) // FIXME
+
 struct ofl_gbapu_osc_sqr
 {
     int32_t on;             // 0 / 1: channel active status
@@ -68,7 +70,7 @@ struct ofl_gbapu
 
 };
 OFL_GBAPU_DEF void ofl_gbapu_init(struct ofl_gbapu *s);
-OFL_GBAPU_DEF void ofl_gbapu_fillbuf(ofl_gbapu *s, void *lbuf, void *rbuf, size_t buf_sz);
+OFL_GBAPU_DEF void ofl_gbapu_fillbuf(struct ofl_gbapu *s, void *lbuf, void *rbuf, size_t buf_sz);
 
 #ifdef __cplusplus
 }
@@ -111,11 +113,11 @@ static void ofl_gbapu_osc_sqr_gen(struct ofl_gbapu_osc_sqr *c)
     // TODO dégager sample var
     c->sample = c->on && (1 << c->phase) & (OFL_GBAPU_DUTY >> c->duty*8) ? c->volume : 0;
 }
-static void ofl_gbapu_osc_sqr_len(ofl_gbapu_osc_sqr *c)
+static void ofl_gbapu_osc_sqr_len(struct ofl_gbapu_osc_sqr *c)
 {
     if (c->autostop && c->len && 0 == --c->len) c->on = 0;
 }
-static void ofl_gbapu_osc_sqr_sweep(ofl_gbapu_osc_sqr *c)
+static void ofl_gbapu_osc_sqr_sweep(struct ofl_gbapu_osc_sqr *c)
 {
     if (--c->sweep_period) return;
     c->sweep_period = c->sweep_time ? c->sweep_time : 8;
@@ -125,14 +127,14 @@ static void ofl_gbapu_osc_sqr_sweep(ofl_gbapu_osc_sqr *c)
     else c->freq = nfreq, c->period = 2 * (0x800 - nfreq);
     if (c->sweep_shift && !c->sweep_dir && c->freq + (c->freq >> c->sweep_shift) >= 0x800) c->on = 0;
 }
-static void ofl_gbapu_osc_sqr_env(ofl_gbapu_osc_sqr *c)
+static void ofl_gbapu_osc_sqr_env(struct ofl_gbapu_osc_sqr *c)
 {
     if (!c->on || !c->env_steps || --c->env_period) return;
     c->env_period = c->env_steps ? c->env_steps : 8;
     if (c->env_dir) { if (c->volume < 15) ++c->volume; }
     else if (c->volume > 0) --c->volume;
 }
-OFL_GBAPU_DEF void ofl_gbapu_fillbuf(ofl_gbapu *s, float *lbuf, float *rbuf, size_t buf_sz)
+OFL_GBAPU_DEF void ofl_gbapu_fillbuf(struct ofl_gbapu *s, float *lbuf, float *rbuf, size_t buf_sz)
 {
     uint32_t ticks_to_run = buf_sz * OFL_GBAPU_SAMPLESPERSEC;
     while (ticks_to_run > 0)

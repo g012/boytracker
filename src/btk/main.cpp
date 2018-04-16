@@ -1,14 +1,16 @@
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "lua.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <thread>
-#include <GLFW/glfw3.h>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "lua.h"
+#include "GLFW/glfw3.h"
 
 #define APPNAME "BoyTracker"
 #define CONF "config.lua"
 
+extern void Player_Init(void);
+extern void Player_Tick(void);
 extern bool Editor_Tick(char* droppedFiles);
 
 static void error_callback(int error, const char* description)
@@ -63,11 +65,12 @@ int main(int argc, char* argv[])
 	s_droppedFiles = (char*)calloc(1, 2);
 
 	// Setup ImGui binding
-	ImGui_ImplGlfw_Init(window, true);
+	ImGui_ImplGlfwGL2_Init(window, true);
 	glfwSwapInterval(0);
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
+    Player_Init();
 	// Main loop
 	int monitorCount = 0;
 	GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
@@ -77,7 +80,7 @@ int main(int argc, char* argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
-		ImGui_ImplGlfw_NewFrame();
+		ImGui_ImplGlfwGL2_NewFrame();
 
         if (!Editor_Tick(s_droppedFiles)) break;
 		s_droppedFiles[0] = 0, s_droppedFiles[1] = 0;
@@ -90,6 +93,8 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 		ImGui::Render();
 		glfwSwapBuffers(window);
+
+        Player_Tick();
 
 		// delay
 		double t1 = glfwGetTime();
@@ -114,7 +119,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Cleanup
-	ImGui_ImplGlfw_Shutdown();
+	ImGui_ImplGlfwGL2_Shutdown();
 	glfwTerminate();
 
 	return 0;

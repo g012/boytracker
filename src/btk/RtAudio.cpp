@@ -41,6 +41,7 @@
 // RtAudio: Version 4.1.2
 
 #include "RtAudio.h"
+#include <assert.h>
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
@@ -206,7 +207,8 @@ RtAudio :: RtAudio( RtAudio::Api api )
   // API-specific definitions are passed to the compiler. But just in
   // case something weird happens, we'll thow an error.
   std::string errorText = "\nRtAudio: no compiled API support found ... critical error!!\n\n";
-  throw( RtAudioError( errorText, RtAudioError::UNSPECIFIED ) );
+  //throw( RtAudioError( errorText, RtAudioError::UNSPECIFIED ) );
+  assert(errorText.c_str());
 }
 
 RtAudio :: ~RtAudio() throw()
@@ -9644,8 +9646,8 @@ void RtApi :: error( RtAudioError::Type type )
 
   if ( type == RtAudioError::WARNING && showWarnings_ == true )
     std::cerr << '\n' << errorText_ << "\n\n";
-  else if ( type != RtAudioError::WARNING )
-    throw( RtAudioError( errorText_, type ) );
+  //else if ( type != RtAudioError::WARNING )
+  //  throw( RtAudioError( errorText_, type ) );
 }
 
 void RtApi :: verifyStream()

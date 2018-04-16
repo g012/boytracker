@@ -88,6 +88,7 @@ endif()
 
 set(BTK_SOURCES 
         ${BTK_SOURCE_DIR}/Blip_Buffer.cpp
+        ${BTK_SOURCE_DIR}/csrc.c
         ${BTK_SOURCE_DIR}/editor.cpp
         ${BTK_SOURCE_DIR}/gl3w.c
         ${BTK_SOURCE_DIR}/glew.c
@@ -98,6 +99,7 @@ set(BTK_SOURCES
         ${BTK_SOURCE_DIR}/lua.c
         ${BTK_SOURCE_DIR}/main.cpp
         ${BTK_SOURCE_DIR}/parg.c
+        ${BTK_SOURCE_DIR}/player.cpp
         ${BTK_SOURCE_DIR}/RtAudio.cpp
         ${BTK_SOURCE_DIR}/RtMidi.cpp
         ${BTK_SOURCE_DIR}/tinyfiledialogs.c
@@ -105,6 +107,7 @@ set(BTK_SOURCES
 set(BTK_HEADERS
         ${BTK_SOURCE_DIR}/Blip_Buffer.h
         ${BTK_SOURCE_DIR}/dr_path.h
+		${BTK_BINARY_DIR}/buildcfg.h
         ${BTK_SOURCE_DIR}/imconfig.h
         ${BTK_SOURCE_DIR}/imgui.h
         ${BTK_SOURCE_DIR}/imgui_impl_glfw.h
@@ -114,6 +117,7 @@ set(BTK_HEADERS
         ${BTK_SOURCE_DIR}/ofl_gbapu.h
         ${BTK_SOURCE_DIR}/lua.h
         ${BTK_SOURCE_DIR}/parg.h
+        ${BTK_SOURCE_DIR}/player.h
         ${BTK_SOURCE_DIR}/stb_rect_pack.h
         ${BTK_SOURCE_DIR}/stb_textedit.h
         ${BTK_SOURCE_DIR}/stb_truetype.h
@@ -168,7 +172,7 @@ if (APPLE)
         add_definitions(-D__MACOSX_CORE__ -D__MACOSX_AU__)
         message(STATUS "Using OSX CoreAudio")
     endif (AUDIO_OSX_CORE)
-endif (APPLE)
+endif ()
 
 # JACK supported on many Unices
 if (UNIX)

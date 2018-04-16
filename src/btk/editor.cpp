@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include "imgui.h"
 #include "tinyfiledialogs.h"
-#define DR_PATH_IMPLEMENTATION
 #include "dr_path.h"
+#include "buildcfg.h"
 
 static struct Editor
 {

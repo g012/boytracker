@@ -60,7 +60,7 @@ namespace ImGui
 
 		// Tooltip on hover
 		int v_hovered = -1;
-		if (IsHovered(inner_bb, 0))
+		if (IsItemHovered(0))
 		{
 			const float t = ImClamp(
 				(g.IO.MousePos.x - inner_bb.Min.x) / (inner_bb.Max.x - inner_bb.Min.x), 0.0f, 0.9999f);
